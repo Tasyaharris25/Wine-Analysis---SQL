@@ -31,7 +31,7 @@ where price is null or country is null or points is null;
 ```
 <img width="137" alt="image" src="https://github.com/user-attachments/assets/6e8a0eb5-2b89-4ba0-bdf5-fe730485fc32" />
 
-Approximately 6.96% of the data contained missing values for critical variables (price, province, points).
+Approximately 6.96% of the data contained missing values for critical variables (price, country, points).
 To ensure data integrity, rows with missing values were removed, and the new table created that contained clean data resulting in a cleaned dataset of 129971 rows.
 ```
  #create cleaned table from wine_data
