@@ -1,0 +1,111 @@
+#check for outlier
+SELECT *
+FROM WineAnalysis.cleaned_wine_data 
+WHERE price <= 0 OR points < 50;
+
+#show price and points
+select price, points 
+from WineAnalysis.cleaned_wine_data 
+
+#identify min price
+select min(price), max(points)
+from WineAnalysis.cleaned_wine_data;
+
+#case study 1 
+#identify high-rated wine with affordable price
+select price, points 
+from WineAnalysis.cleaned_wine_data 
+where price < 20 and points >= 90
+order by points desc, price asc;
+
+#best value by  province 
+select province, variety, round(avg(points / price),2) as avg_points_per_dollar 
+from WineAnalysis.cleaned_wine_data 
+where price > 0 
+group by province, variety
+order by avg(points / price) desc;
+
+# case study 2: high quality wines 
+# identify high quality wines
+select * 
+from WineAnalysis.cleaned_wine_data 
+where points >= 90;
+
+#analyze common characteristic
+#identify most common varieties among high-rated wines (top 10 varieties)
+select variety, count(*) as count_high_rated 
+from WineAnalysis.cleaned_wine_data
+where points >= 90 
+group by variety 
+order by count_high_rated desc
+limit 10;
+
+#analyze average price of high-rated wine 
+select variety, round(avg(price),2) as avg_price, round(avg(points),2) as avg_points
+from WineAnalysis.cleaned_wine_data
+where points >= 90 
+group by variety 
+order by avg_price desc;
+
+#province with hight rated points
+select province, points 
+from WineAnalysis.cleaned_wine_data 
+where points >= 90 
+group by province, points
+order by points desc;
+
+#high rated wine by province
+select province, count(*) as count_high_rated, round(avg(price),2) as avg_price 
+from WineAnalysis.cleaned_wine_data 
+where points >= 90 
+group by province
+order by count_high_rated desc
+limit 10;
+
+#relationship between designation and points 
+select designation, round(avg(points),2) as avg_points, count(*) as count_high_rated 
+from WineAnalysis.cleaned_wine_data
+where points >=90 
+group by designation 
+order by avg_points desc;
+
+#case study 3: variety performance trends
+#identify most expensive varieties 
+select variety, round(avg(price),2) as avg_price, round(avg(points),2) as avg_points 
+from WineAnalysis.cleaned_wine_data 
+group by variety
+order by avg_price desc;
+
+#underrated varieties 
+select variety, round(avg(price),2) as avg_price, round(avg(points),2) as avg_points 
+from WineAnalysis.cleaned_wine_data 
+group by variety 
+having AVG(points) >= 90 AND AVG(price) < 20
+order by avg_points desc; 
+
+#points and price trends in country 
+select country, variety, round(avg(price),2) as avg_price, round(avg(points),2) as avg_points 
+from WineAnalysis.cleaned_wine_data 
+group by country, variety 
+order by country, avg_points desc; 
+
+#case study 4: wine profiles by province 
+#most common varieties by province 
+select province, variety, count(*) as count 
+from `WineAnalysis.cleaned_wine_data`
+group by province, variety
+order by province, count desc;
+
+#Average Points and Prices by province 
+#Compare provinces based on average quality and price.
+select province, round(avg(price),2) as avg_price, round(avg(points),2) as avg_points 
+from WineAnalysis.cleaned_wine_data 
+group by province
+order by avg_points desc, avg_price asc;
+
+#high performing designation by province
+select province, designation, round(avg(points),2) as avg_points, count(*) as count 
+from WineAnalysis.cleaned_wine_data 
+group by province, designation 
+ORDER BY avg_points DESC;
+
